@@ -6,18 +6,29 @@ import matplotlib.pyplot as plt
 from textwrap import wrap
 from tableau20 import *
 
-output_file = 'plot/cache_time.pdf'
+fig = plt.figure(figsize=(8, 5))
+# fig.subplots_adjust(left=0.2, bottom=0.2)
+ax = fig.add_subplot(111)
 
-# tf, ngram, normalize, bucketize
-normal_means = (94.5368, 42.92113333, 6.60304, 7.28589)
-cache_out_means = (102.823, 99.8619, 8.22986, 7.9413)
-cache_in_means = (18.0473, 90.53963333, 5.75491, 5.54925)
-#spark_means = (200, 150, 200)
+dataset = 'higgs' #'url'
+output_file = 'plot/cache_policy_%s.pdf' % dataset
+
+# Higgs
+# cache_all, human, cost_model
+if dataset == 'higgs':
+  transform_means = (348.959, 348.959, 348.959)
+  cache_out_means = (363.641, 354.853, 356.249)
+  cache_in_means = (240.798, 218.517, 216.898)
+else:
+  # Url
+  transform_means = (236.066, 236.066, 236.066)
+  cache_out_means = (236.795, 236.949, 236.949)
+  cache_in_means = (6.95158, 5.05156, 5.05156)
 
 #hotbox_std = (1.23, 0)
 
 # # of entries in each mean, or number of clusters.
-N = 4
+N = 3
 #num_clusters = 2
 #colors = ['b', 'y', 'k', 'r', 'g'][:N]
 
@@ -26,10 +37,10 @@ width = 0.15       # the width of the bars
 offset = 0.35
 tick_offset = 0.1
 
-fig, ax = plt.subplots()
+#fig, ax = plt.subplots()
 #fig.set_size_inches(18.5, 10.5)
 rects = []
-rects.append(ax.bar(ind + offset, normal_means, width, \
+rects.append(ax.bar(ind + offset, transform_means, width, \
   color=tableau_colors['green']))
 rects.append(ax.bar(ind + offset + width, cache_out_means, width, \
   color=tableau_colors['yellow']))
@@ -42,8 +53,9 @@ rects.append(ax.bar(ind + offset + 2 * width, cache_in_means, width, \
 ax.set_ylabel('Time (seconds)', fontsize=20)
 #ax.set_title('File Sizes Comparison', fontsize=20)
 ax.set_xticks(ind + (N * width) / N + offset + tick_offset)
-ax.set_xticklabels(('DNN\nTransform', 'CP', 'Normalize', 'Bucketize'))
-ax.set_ylim([0, 140])
+ax.set_xticklabels(('Cache All', 'Human', 'Cache Policy'))
+ax.set_ylim([0, 500])
+#ax.set_ylim([0, 350])
 plt.xticks(size=20)
 plt.yticks(size=20)
 axes = plt.gca()

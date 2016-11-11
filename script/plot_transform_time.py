@@ -8,17 +8,18 @@ from tableau20 import *
 
 output_file = 'plot/runtime.pdf'
 
-# select, ngram, normalize
-hotbox_means = (100.07, 120.8266667, 121.057)
-spark_means = (424.272, 0, 739.573)
+# select, ngram, normalize, standardized
+hotbox_means = (100.07, 120.8266667, 121.057, 195.125 )
+spark_means = (424.272, 900, 739.573, 0)
 
-hotbox_means_1node = (1483.996667, 1789.923333, 1534.256667)
-spark_means_1node = (5035.887, 0, 9925.748)
+# TODO(wdai) replace 2472 with real number.
+hotbox_means_1node = (1483.996667, 1789.923333, 1534.256667, 1501)
+spark_means_1node = (5035.887, 11000, 9925.748, 0)
 
 #hotbox_std = (1.23, 0)
 
 # # of entries in each mean, or number of clusters.
-N = 3
+N = 4
 #colors = ['b', 'y', 'k', 'r', 'g'][:N]
 
 ind = np.arange(N)  # the x locations for the groups
@@ -40,8 +41,8 @@ rects.append(ax[0].bar(ind + offset + width, hotbox_means, width, \
 ax[0].set_ylabel('Time (seconds)', fontsize=20)
 #ax.set_title('File Sizes Comparison', fontsize=20)
 ax[0].set_xticks(ind + (2 * width) / 2 + offset + tick_offset)
-ax[0].set_xticklabels(('Load', 'CP', 'Normalization'))
-ax[0].set_ylim([0, 1000])
+ax[0].set_xticklabels(('Load', 'CP', 'Normalize', 'Standardize'))
+ax[0].set_ylim([0, 1200])
 plt.sca(ax[0])
 plt.xticks(size=20)
 plt.yticks(size=20)
@@ -67,8 +68,8 @@ ax[1].set_ylabel('Time (seconds)', fontsize=20)
 #ax.set_title('File Sizes Comparison', fontsize=20)
 #ax[1].set_xticks(ind + (N * width) / 2 + offset + tick_offset)
 ax[1].set_xticks(ind + tick_offset)
-ax[1].set_xticklabels(('Load', 'CP', 'Normalization'))
-ax[1].set_ylim([0, 11000])
+ax[1].set_xticklabels(('Load', 'CP', 'Normalize', 'Standardize'))
+ax[1].set_ylim([0, 13000])
 plt.sca(ax[1])
 plt.xticks(size=20)
 plt.yticks(size=20)
